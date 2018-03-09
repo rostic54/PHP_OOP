@@ -4,17 +4,28 @@ class Form{
 	public $open;
 	private $close;
 	private $input;
+	private $password;
+	private $submit;
 	private $attr;
-	static $count = 2 ; 
+	//private $saveContent = ['value' => ""];
+	
 
 	private function strMaker( $collection ){
 		$this->attr = '';
 
 		foreach ($collection as $key => $value) {
 			
+
 			$this->attr .= ' ' . $key ."='" . $collection[$key] . '\'';
-			echo "<br>" . $count++;
+			
+			if( $collection[$key] == 'text'){
+			
+				$text = '';
+				if(isset ($_REQUEST['name']) ) $text = $_REQUEST[$collection['name']];
+				$this->attr .= ' ' . 'value' . "=" . '\'' . "$text" . '\'';
+			}
 			print_r($this->attr);
+			echo "<br>";
 		}
 		
 		return $this->attr;
@@ -35,10 +46,19 @@ class Form{
 		return $this;
 	}
 	public function show(){
-	    echo "$this->open <br> $this->input <br> $this->close";
+	    echo "$this->open <br> 
+	          $this->input <br>
+	          $this->password <br>
+	          $this->submit <br>
+	          $this->close";
 	}
-	public function getInput(){
-		return $this->input;
+	public function password( $arr ){
+		$this->password = "<input " . $this->strMaker( $arr ) . ">";
+		return $this;
+	}
+	public function submit( $arr ){
+	    $this->submit = "<input " . $this->strMaker( $arr ) . ">";
+		return $this;		
 	}
 	
 }
@@ -46,14 +66,14 @@ class Form{
 $form = new Form;
 echo "<pre>";
 print_r($form);
-$arrAtr = ['action'=>'index.php', 'method'=>'POST'];
+$arrAtr = ['action'=>'oop_practice.php', 'method'=>'GET'];
 echo count($arrAtr) . "<br>";
-$form->open($arrAtr)->input(['type'=>'text', 'placeholder'=>'Ваше имя', 'name'=>'name'])->close()->show();
+$form->open($arrAtr)->input(['type'=>'text', 'placeholder'=>'Ваше имя', 'name'=>'name'])->password(['type'=>'text','placeholder'=>'Ваш пароль', 'name'=>'pass'])->submit(['type' => 'submit','value'=>'Отправить'])->close()->show();
 
 
-echo "<pre>";
+/*echo "<pre>";
  print_r($form->getInput());
-
+*/
 
 
 
