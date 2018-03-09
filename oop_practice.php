@@ -1,95 +1,61 @@
 <?php
-class User{
+class Form{
 
-	protected $name;
-	protected $age;
-	//private $salary;
+	public $open;
+	private $close;
+	private $input;
+	private $attr;
+	static $count = 2 ; 
 
-	public function __construct($name, $sal){
-		$this->name = $name;
-		$this->salary = $sal;
-	}
+	private function strMaker( $collection ){
+		$this->attr = '';
 
-
-	public function getName(){
-		return $this->name; 
-	}
-	public function setName($name){
-	    $this->name = $name; 
-	}
-	public function getAge(){
+		foreach ($collection as $key => $value) {
+			
+			$this->attr .= ' ' . $key ."='" . $collection[$key] . '\'';
+			echo "<br>" . $count++;
+			print_r($this->attr);
+		}
 		
-		return $this->age;
+		return $this->attr;
 	}
-	public function setAge($age){
+
+	public function open($arr){		
 		
-		$this->age = $age;
+		$this->open = "<form " . $this->strMaker($arr) . ">";
+		return $this;
+
 	}
-
-
-}
-
-class Worker extends User{
-	private $salary;
-
-	function __construct($name, $age){
-		$this->name = $name;
-		$this->age = $age;
+	public function input( $arr ){
+		$this->input = "<input " . $this->strMaker($arr) . ">";
+		return $this;
+	}
+	public function close(){
+		$this->close = '</form>';
+		return $this;
+	}
+	public function show(){
+	    echo "$this->open <br> $this->input <br> $this->close";
+	}
+	public function getInput(){
+		return $this->input;
 	}
 	
-	public function getSalary(){
-		return $this->salary;
-	}
-	public function setSalary($salary){
-		$this->salary = $salary;
-	}
 }
 
+$form = new Form;
+echo "<pre>";
+print_r($form);
+$arrAtr = ['action'=>'index.php', 'method'=>'POST'];
+echo count($arrAtr) . "<br>";
+$form->open($arrAtr)->input(['type'=>'text', 'placeholder'=>'Ваше имя', 'name'=>'name'])->close()->show();
 
-class Student extends User{
-	private $stipend;
 
-	function __construct($name, $age){
-		$this->name = $name;
-		$this->age = $age;
-	}
-	
-	public function getStipend(){
-		return $this->stipend;
-	}
-	public function setStipend($stip){
-		$this->stipend = $stip;
-	}
-}
+echo "<pre>";
+ print_r($form->getInput());
 
 
 
-$worker_1 = new Worker("Ivan", 30);
-//$worker_1->setName()  ;
-//$worker_1->setAge(20);
-$worker_1->setSalary(3000) ;
-
-$worker_2 = new Worker("Kolya", 25);
-//$worker_2->setName() ;
-//$worker_2->setAge(30);
-$worker_2->setSalary(5000); 
-
-$student = new Student('James', 19);
-$student->setStipend(800);
-/*
-$driver = new Driver(15, 'B', 7200, 'Petya', '43');
-$driver->setSalary(10000);
-$driver->setAge(10);*/
-
-
- echo "<pre>";
- print_r($worker_1);
- print_r($worker_2);
- print_r($student);
- print_r($driver);
-
-
-echo "The summ of their salaries is: " . ($worker_1->getSalary() + $worker_2->getSalary());
 
 
 ?>
